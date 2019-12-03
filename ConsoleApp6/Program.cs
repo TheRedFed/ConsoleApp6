@@ -8,7 +8,7 @@ namespace ConsoleApp6
         {
             Console.WriteLine("Hello World!");
             Console.WriteLine("Is het gelukt??");
-            JJJJJJJJ:
+           
         }
     }
 }
