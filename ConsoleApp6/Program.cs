@@ -8,11 +8,13 @@ namespace ConsoleApp6
     {
         static void Main(string[] args)
         {
+            List<IQuestion> questions = new List<IQuestion>(); 
+
             Question first = new Question();
-            first.difficulty = 4;
-            first.setText($"Who was the inventor of Java? Difficulty: {first.difficulty}");
+            first.difficulty = 3;
+            first.setText($"Who was the inventor of Java?");
             first.setAnswer("James Gosling");
-            
+            questions.Add(first);
 
 
             ChoiceQuestion second = new ChoiceQuestion();
@@ -22,17 +24,32 @@ namespace ConsoleApp6
             second.addChoice("Canada", true);
             second.addChoice("Denmark", false);
             second.addChoice("United States", false);
+            questions.Add(second);
+                       
+        }
 
-            presentQuestion(first);
-            presentQuestion(second);
+
+       
+        public static void questionOrderer(List<IQuestion> questions)
+        {
+            var orderedQuestions = from q in questions
+                                   orderby q.difficulty
+                                   select q;
+
+            foreach (IQuestion q in orderedQuestions)
+            {
+                presentQuestion(q);
+            }
         }
 
         public static void presentQuestion(IQuestion q)
         {
+            Console.WriteLine($"Difficulty: {q.difficulty}");
             q.display();
             Console.Write("Your answer: ");
             string response = Console.ReadLine();
             Console.WriteLine(q.checkAnswer(response));
+            Console.WriteLine();
         }
     }
 
