@@ -12,10 +12,9 @@ namespace ConsoleApp6
 
             Question first = new Question();
             first.difficulty = 3;
-            first.setText($"Who was the inventor of Java?");
+            first.setText("Who was the inventor of Java?");
             first.setAnswer("James Gosling");
             questions.Add(first);
-
 
             ChoiceQuestion second = new ChoiceQuestion();
             second.difficulty = 1;
@@ -25,11 +24,70 @@ namespace ConsoleApp6
             second.addChoice("Denmark", false);
             second.addChoice("United States", false);
             questions.Add(second);
-                       
+
+            //Voorbeeld vragen voor het nachecken van de opdracht
+            Question a = new Question();
+            a.difficulty = 1;
+            a.setText("a?");
+            a.setAnswer("a");
+            questions.Add(a);
+
+            Question b = new Question();
+            b.difficulty = 2;
+            b.setText("b");
+            b.setAnswer("b");
+            questions.Add(b);
+
+            Question c = new Question();
+            c.difficulty = 3;
+            c.setText("c");
+            c.setAnswer("c");
+            questions.Add(c);
+
+            keuzeMenu(questions);
+            
+
         }
 
+        public static void keuzeMenu(List<IQuestion> questions)
+        {
+            Console.WriteLine("Kies 1 voor gesorteerde vragenlijst \nKies 2 voor specifieke moeilijkheidsgraad");
+            Console.Write("Keuze: ");
+            int startkeuze = Convert.ToInt16(Console.ReadLine());
 
-       
+            if (startkeuze == 1)
+            {
+                questionOrderer(questions);
+            }
+            if (startkeuze == 2)
+            {
+                Console.WriteLine("\nMaar keuze uit nummer 1-3");
+                int selection = Convert.ToInt16(Console.ReadLine());
+                questionSelecter(selection, questions);
+            }
+            else
+            {
+                Console.Write("Keuze mislukt...");
+                return;
+            }
+        }
+        
+        public static void questionSelecter(int selection, List<IQuestion> questions)
+        {
+            if (selection <= 3)
+            {
+                foreach (IQuestion q in questions)
+                {
+                    if (q.difficulty == selection)
+                    {
+                        presentQuestion(q);
+                    }
+                }
+            }
+            else { Console.WriteLine("Keuze mislukt..."); } 
+
+        }
+
         public static void questionOrderer(List<IQuestion> questions)
         {
             var orderedQuestions = from q in questions
@@ -37,19 +95,19 @@ namespace ConsoleApp6
                                    select q;
 
             foreach (IQuestion q in orderedQuestions)
-            {
+            { 
                 presentQuestion(q);
             }
         }
 
         public static void presentQuestion(IQuestion q)
         {
-            Console.WriteLine($"Difficulty: {q.difficulty}");
+            Console.WriteLine($"\nDifficulty: {q.difficulty}");
             q.display();
             Console.Write("Your answer: ");
             string response = Console.ReadLine();
             Console.WriteLine(q.checkAnswer(response));
-            Console.WriteLine();
+            
         }
     }
 
@@ -60,7 +118,6 @@ namespace ConsoleApp6
         void setAnswer(String correctResponse);
         Boolean checkAnswer(String response);
         void display();
-
     }
 
     public class Question : IQuestion
@@ -81,7 +138,6 @@ namespace ConsoleApp6
                 {
                     _difficulty = -1;
                 }
-
             }
         }
 
@@ -92,8 +148,6 @@ namespace ConsoleApp6
             answer = "";
             _difficulty = 0;
         }
-
-        
 
         public void setText(String questionText)
         {
@@ -155,11 +209,6 @@ namespace ConsoleApp6
                 String choiceString = "" + choices.Count;
                 setAnswer(choiceString);
             }
-        }
-
-        public void setDifficulty(int graad)
-        {
-
         }
 
         public void setText(String questionText)
